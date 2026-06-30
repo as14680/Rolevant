@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: rolevant
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python3 run.py serve
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false          # set manually in Render dashboard
+      - key: DATA_DIR
+        value: /var/data
+      - key: ENVIRONMENT
+        value: production
+    disk:
+      name: rolevant-data
+      mountPath: /var/data
+      sizeGB: 1

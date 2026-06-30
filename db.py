@@ -3,12 +3,17 @@ Database layer — SQLite with WAL for safe concurrent reads.
 """
 
 import json
+import os
 import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Optional
 
-DB_PATH = Path(__file__).parent / "jobs.db"
+# DATA_DIR lets Railway/Render/Fly point to a persistent volume.
+# Falls back to the app directory for local development.
+_data_dir = Path(os.environ.get("DATA_DIR", Path(__file__).parent))
+_data_dir.mkdir(parents=True, exist_ok=True)
+DB_PATH = _data_dir / "jobs.db"
 
 
 def get_db() -> sqlite3.Connection:
